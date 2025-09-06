@@ -27,6 +27,22 @@ app.get('/get',(req,res)=>{
     .catch(err=> res.json(err))
 })
 
+//to update i.e check the task once it is completed
+app.put('/update/:id',(req,res)=>{
+    const {id}=req.params;
+    TodoModel.findByIdAndUpdate({_id:id},{done:true})
+    .then(result=> res.json(result))
+    .catch(err=> res.json(err))
+})
+
+app.delete('/delete/:id',(req,res)=>{
+    const {id}=req.params;
+    TodoModel.findByIdAndDelete({_id:id},{done:true})
+    .then(result=> res.json(result))
+    .catch(err=> res.json(err))
+})
+
+//cause i was getting a warning ( gpt )
 app.get('/', (req, res) => {
   res.send('API is running');
 });

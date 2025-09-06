@@ -4,11 +4,14 @@ import axios from "axios"
 function Create({ onAdd }) {
     const [task,setTask]=useState("")
     const handleAdd=()=>{
+      if (!task.trim()) {       // to stop user from adding empty strings
+      alert("Please enter a task first!");
+      <div>enter a task</div>
+      return;
+  }
         axios.post('http://localhost:3001/add',{task:task})
         .then(result=>{
-        console.log(result)
-        onAdd(result.data)   // 👉 update Home instantly
-        setTask("")          // clear input field)
+        location.reload()
         })
         .catch(err=>console.log(err))
     }

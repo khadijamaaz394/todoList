@@ -15,11 +15,15 @@ function Home() {
   const handleTaskAdded = (newTask) => {
     setTodos(prev => [...prev, newTask])   // update instantly
   }
-  const handleEdit=()=>{
-
+  const handleEdit=(id)=>{
+    axios.put('http://localhost:3001/update/'+id)
+    .then(result => location.reload())
+    .catch(err => console.log(err))
   }
-  const handleDel=()=>{
-    
+  const handleDel=(id)=>{
+    axios.delete('http://localhost:3001/delete/'+id)
+    .then(result => location.reload())
+    .catch(err => console.log(err))
   }
 
   return (
@@ -34,10 +38,12 @@ function Home() {
           :(
           todos.map(todo=>(
             <div className='task' key={todo._id}>
-              <button onClick={handleEdit} className='checkBtn'>✅</button>
-              <div className='taskText'><p>{todo.task}</p></div>
+              <button onClick={()=>handleEdit(todo._id)} className='checkBtn'>✅</button>
+              <div>
+                <p className={todo.done ? "taskDone" : "task"}>{todo.task}</p>
+              </div>
               
-              <button onClick={handleDel} className="delBtn">🗑️</button>
+              <button onClick={()=>handleDel(todo._id)} className="delBtn">🗑️</button>
             </div>
           ))
         )
