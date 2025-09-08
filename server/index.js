@@ -6,16 +6,12 @@ const TodoModel = require("./Models/Todo")
 const app= express()
 
 // log all incoming requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.url}`);
+//   next();
+// });
 
 app.use(cors());
-
-
-
-
 app.use(express.json())
 
 mongoose.connect('mongodb://127.0.0.1:27017/test')
@@ -30,14 +26,16 @@ app.get('/get',(req,res)=>{
 //to update i.e check the task once it is completed
 app.put('/update/:id',(req,res)=>{
     const {id}=req.params;
-    TodoModel.findByIdAndUpdate({_id:id},{done:true})
+    const update = req.body;  // can contain {done: true/false} or {task: "..."}
+
+    TodoModel.findByIdAndUpdate({_id:id},update,{new:true})
     .then(result=> res.json(result))
     .catch(err=> res.json(err))
 })
 
 app.delete('/delete/:id',(req,res)=>{
     const {id}=req.params;
-    TodoModel.findByIdAndDelete({_id:id},{done:true})
+    TodoModel.findByIdAndDelete({_id:id})
     .then(result=> res.json(result))
     .catch(err=> res.json(err))
 })
