@@ -1,11 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
 
-function useDeleteTodo() {
+function useDeleteTodo(fetchTodos) {
   const [isLoading, setIsLoading] = useState(false)
   const [isErrored, setIsErrored] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState(null)
+
 
   const deleteTodo = async (id) => {
     setIsLoading(true)
@@ -16,6 +17,7 @@ function useDeleteTodo() {
     try {
       await axios.delete(`http://localhost:3001/delete/${id}`)
       setIsSuccess(true)
+      if (fetchTodos) fetchTodos()
     } catch (err) {
       setIsErrored(true)
       setError(err)

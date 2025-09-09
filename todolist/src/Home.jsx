@@ -10,13 +10,13 @@ function Home() {
   const[task,setTask]=useState("")
   
   const { todos, fetchTodos, isLoading: fetching } = useFetchTodos()
-  const { addTodo, isLoading: adding } = useAddTodo()
-  const { updateTodo, isLoading: updating } = useUpdateTodo()
-  const { deleteTodo, isLoading: deleting } = useDeleteTodo()
+  const { addTodo, isLoading: adding } = useAddTodo(fetchTodos)
+  const { updateTodo, isLoading: updating } = useUpdateTodo(fetchTodos)
+  const { deleteTodo, isLoading: deleting } = useDeleteTodo(fetchTodos)
 
    const handleAdd = async () => {
     await addTodo(task)
-    fetchTodos()                            // to get the page to refresh after we add a task 
+    // shifted the fetchTodo() to individual hooks
     setTask("")
   }
 
