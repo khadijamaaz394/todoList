@@ -26,27 +26,60 @@
     justify-content: center;
     border-radius: 5px;
 }
-
-.checkBtn {
-  background-color: #4caf50;
-  color: white;
-  margin-right: 70px;
-  display: flex;
-  align-items: center;
+.checkBtn{
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius:8px ;
+  font-weight: 500;
+  color: #00000080;
+  text-shadow: none;
+  border:1px solid #00000080;
+  transition: 0.3s ease;
+  user-select: none;
+  margin-right: 30px;
+  size: 30px;
 }
+
 .checkBtn:hover {
-  background-color: #43a047;
+  color:#ffffff;
+  background: #008cff;
+  border:1px solid #008cff;
+  text-shadow:
+  0 0 5px #ffffff,
+    0 0 10px #ffffff,
+      0 0 20px #ffffff;
+  box-shadow:
+  0 0 5px #008cff,
+  0 0 20px #008cff,
+  0 0 50px #008cff,
+  0 0 100px #008cff, ;
 }
-
 
 .delBtn{
-  background-color: #f44336;
-  color: white;
-  margin-left: 70px;
-  display: flex;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  border-radius:8px ;
+  font-weight: 500;
+  color: #00000080;
+  text-shadow: none;
+  border:1px solid #00000080;
+  transition: 0.3s ease;
+  user-select: none;
+  margin-left: 50px;
 }
 .delBtn:hover {
-  background-color: #e53935;
+  color:#ffffff;
+  background: #ff0000;
+  border:1px solid #ff0000;
+  text-shadow:
+  0 0 5px #ffffff,
+    0 0 10px #ffffff,
+      0 0 20px #ffffff;
+  box-shadow:
+  0 0 5px #ff0000,
+  0 0 20px #ff0000,
+  0 0 50px #ff0000,
+  0 0 100px #ff0000, ;
 }
 /* .taskText{
     display: flex;
