@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
-import { TodosContext } from './TodosContext'  
+import { useTodos } from './TodosContext'  
 
 function Home() {
-  const { todos, loading, fetching, addTodo, updateTodo, deleteTodo } = useContext(TodosContext)
+  const { todos, loading, fetching, addTodo, updateTodo, deleteTodo } = useTodos()
   const[task,setTask]=useState("")
   
   const handleAdd = () => {

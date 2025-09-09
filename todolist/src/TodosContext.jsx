@@ -1,8 +1,16 @@
-import React, { createContext, useState, useEffect } from "react"
+import React, { createContext, useState, useEffect,useContext } from "react"
 import axios from "axios"
 
-export const TodosContext = createContext()
+const TodosContext = createContext()
 
+//custom hook like useAuth()
+export function useTodos(){
+  const context = useContext(TodosContext)
+  if(context===undefined){
+    throw new Error("useTodos must be used within the TodosProvider")
+}
+return context
+}
 
 // Provider component
 export default function TodosProvider ({ children }) {
