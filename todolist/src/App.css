@@ -36,7 +36,7 @@
   border:1px solid #00000080;
   transition: 0.3s ease;
   user-select: none;
-  margin-right: 30px;
+  margin-right: 100px;
   size: 30px;
 }
 
@@ -65,7 +65,7 @@
   border:1px solid #00000080;
   transition: 0.3s ease;
   user-select: none;
-  margin-left: 50px;
+  margin-left: 100px;
 }
 .delBtn:hover {
   color:#ffffff;
@@ -88,14 +88,5 @@
     width: 300px;
 } */
 .taskDone{
-    background-color: black;
-    color: white;
-    display: flex;
-    width: 350px;
-    padding: 10px;
-    margin: 10px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
     text-decoration: line-through;
 }

@@ -1,87 +1,43 @@
 import React, { useState } from "react"
 import useFetchTodos from "./hooks/useFetchTodos"
 import useAddTodo from "./hooks/useAddTodo"
-import useUpdateTodo from "./hooks/useUpdateTodo"
-import useDeleteTodo from "./hooks/useDeleteTodo"  
-
-//imported all the hooks
+import TodoItem from "./components/TodoItem"
 
 function Home() {
-  const[task,setTask]=useState("")
-  
+  const [task, setTask] = useState("")
   const { todos, fetchTodos, isLoading: fetching } = useFetchTodos()
   const { addTodo, isLoading: adding } = useAddTodo(fetchTodos)
-  const { updateTodo, isLoading: updating } = useUpdateTodo(fetchTodos)
-  const { deleteTodo, isLoading: deleting } = useDeleteTodo(fetchTodos)
 
-   const handleAdd = async () => {
+  const handleAdd = async () => {
     await addTodo(task)
-    // shifted the fetchTodo() to individual hooks
     setTask("")
   }
 
   return (
-    
-    <div className='home'>
-        <h1>To Do List</h1>
+    <div className="home">
+      <h1>To Do List</h1>
 
-        <div className='create_form'>
-            <input 
-            id="input_field"
-            value={task} 
-            type="text" 
-            placeholder='enter your task:' 
-            onChange={(e)=>setTask(e.target.value)}
-            disabled={adding}/>
-            <button 
-            type='button' 
-            onClick={handleAdd} 
-            disabled={adding}>
-              {adding ? "Saving..." : "Add"}
-            </button>
-        </div>
+      <div className="create_form">
+        <input
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="Enter task"
+          disabled={adding}
+        />
+        <button onClick={handleAdd} disabled={adding}>
+          {adding ? "Saving..." : "Add"}
+        </button>
+      </div>
 
-        {fetching ? 
-        (
+      {fetching ? (
         <p>Loading tasks...</p>
-        ) : 
-        todos.length === 0 ? 
-        (
-        <div><h2>No tasks yet...</h2></div>
-        ) : 
-        (
-          todos.map(todo=>(
-            <div className='task' key={todo._id}>
-
-              <button 
-              onClick={
-                async()=>
-                  {
-                    await updateTodo(todo._id,todo.done)
-                    fetchTodos()
-                  }
-                  }
-                  className='checkBtn' 
-                  disabled={updating}>CHECK
-              </button>
-
-              <div>
-                <p className={todo.done ? "taskDone" : "task"}>{todo.task}</p>
-              </div>
-
-              <button 
-                  onClick={async()=>{
-                    await deleteTodo(todo._id)
-                    fetchTodos()
-                  }} 
-                  className="delBtn" 
-              disabled={deleting}>DEL
-              </button>
-            
-            </div>
-          ))
-        )
-        }
+      ) : todos.length === 0 ? (
+        <h2>No tasks yet...</h2>
+      ) : (
+        todos.map((todo) => (
+          <TodoItem key={todo._id} todo={todo} fetchTodos={fetchTodos} />
+        ))
+      )}
     </div>
   )
 }
