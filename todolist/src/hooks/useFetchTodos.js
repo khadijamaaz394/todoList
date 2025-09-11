@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 
-export default function useFetchTodos() {
+export default function useFetchTodos(page = 1, limit = 5) {
   const [todos, setTodos] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [isErrored, setIsErrored] = useState(false)
   const [error, setError] = useState(null)
@@ -10,10 +11,12 @@ export default function useFetchTodos() {
   const fetchTodos = async () => {
     setIsLoading(true)
     setIsErrored(false)
-    setError(null)
     try {
-      const res = await axios.get("http://localhost:3001/get")
-      setTodos(res.data)
+      const res = await axios.get(
+        `http://localhost:3001/get?page=${page}&limit=${limit}`
+      )
+      setTodos(res.data.todos)
+      setTotalPages(res.data.totalPages)
     } catch (err) {
       setIsErrored(true)
       setError(err)
@@ -22,7 +25,9 @@ export default function useFetchTodos() {
     }
   }
 
-  useEffect(() => { fetchTodos() }, [])
+  useEffect(() => {
+    fetchTodos()
+  }, [page, limit]) // to make the page refetch/re-render-ish when page or limit changes
 
-  return { todos, fetchTodos, isLoading, isErrored, error }
+  return { todos, totalPages, fetchTodos, isLoading,isErrored, error }
 }

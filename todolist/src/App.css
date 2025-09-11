@@ -3,43 +3,89 @@
     flex-direction: column;
     align-items: center;
 }
+
 .create_form input{
     width:300px;
     padding: 10px;
     border-bottom: 2px solid;
     outline: none;
 }
+
 .create_form button{
     padding: 10px;
     background-color: black;
     color: white;
     cursor: pointer;
 }
+
 .task{
-    background-color: black;
-    color: white;
     display: flex;
-    width: 350px;
-    padding: 10px;
-    margin: 10px;
     align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+    
+    justify-content: space-between;
+    background: black;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    gap: 10px;
 }
+
+.task p {
+  flex: 1;                   
+  margin: 0;
+  text-align: center;         
+  word-wrap: break-word;      
+  overflow-wrap: anywhere;
+}
+
+.taskDone{
+    text-decoration: line-through;
+    color: #aaa;
+}
+
 .checkBtn{
   padding: 10px 20px;
   text-transform: uppercase;
-  border-radius:8px ;
   font-weight: 500;
   color: #00000080;
   text-shadow: none;
   border:1px solid #00000080;
-  transition: 0.3s ease;
+  transition: 0.1s ease;
   user-select: none;
   margin-right: 100px;
   size: 30px;
 }
 
+/* Standardize button size */
+.checkBtn,
+.delBtn {
+  flex-shrink: 0;             /* don't let them shrink */
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.checkBtn,
+.delBtn{
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #00000080;
+  text-shadow: none;
+  border:1px solid #00000080;
+  transition: 0.1s ease;
+  user-select: none;
+}
+.delBtn{
+  margin-left: 105px;
+}
+
+/*glowing buttons ...*/
 .checkBtn:hover {
   color:#ffffff;
   background: #008cff;
@@ -53,19 +99,6 @@
   0 0 20px #008cff,
   0 0 50px #008cff,
   0 0 100px #008cff, ;
-}
-
-.delBtn{
-  padding: 10px 20px;
-  text-transform: uppercase;
-  border-radius:8px ;
-  font-weight: 500;
-  color: #00000080;
-  text-shadow: none;
-  border:1px solid #00000080;
-  transition: 0.3s ease;
-  user-select: none;
-  margin-left: 100px;
 }
 .delBtn:hover {
   color:#ffffff;
@@ -81,12 +114,26 @@
   0 0 50px #ff0000,
   0 0 100px #ff0000, ;
 }
-/* .taskText{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 300px;
-} */
-.taskDone{
-    text-decoration: line-through;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.pagination button {
+  background-color: #DC2F02;
+  color: rgb(255, 255, 255);
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #E85D04;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
