@@ -23,7 +23,14 @@ app.get("/get", async (req, res) => {
     const limit = parseInt(req.query.limit) || 5
     const skip = (page - 1) * limit
 
-    const todos = await TodoModel.find().skip(skip).limit(limit)
+    // default = newest first
+    const sortOrder = req.query.sort === "asc" ? 1 : -1  
+
+    const todos = await TodoModel.find()
+      .sort({ createdAt: sortOrder })   // 👈 sort based on query
+      .skip(skip)
+      .limit(limit)
+
     const total = await TodoModel.countDocuments()
 
     res.json({

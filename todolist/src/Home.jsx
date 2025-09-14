@@ -6,9 +6,10 @@ import TodoItem from "./components/TodoItem"
 function Home() {
   const [task, setTask] = useState("")
   const [page, setPage] = useState(1)
-  const limit = 3
+  const [sort, setSort] = useState("desc")  // default = newest first
+  const limit = 4
 
-  const { todos, totalPages, fetchTodos, isLoading: fetching } = useFetchTodos(page, limit)
+  const { todos, totalPages, fetchTodos, isLoading: fetching } = useFetchTodos(page, limit,sort)
   const { addTodo, isLoading: adding } = useAddTodo(fetchTodos)
 
   const handleAdd = async () => {
@@ -16,10 +17,25 @@ function Home() {
     setTask("")
     setPage(1) // to get it reset to the first page after we add a new todo
   }
+  const handleSortChange = (e) => {
+    setSort(e.target.value)
+    setPage(1) // reset to page 1 when changing sort
+  }
 
   return (
     <div className="home">
       <h1>To Do List</h1>
+
+      {/* Sort dropdown */}
+      {todos.length > 0 && (
+      <div className="sort-controls">
+        <label>Sort by: </label>
+        <select value={sort} onChange={handleSortChange}>
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+      </div>
+      )}
 
       {/*input part*/}
       <div className="create_form">

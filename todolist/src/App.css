@@ -4,11 +4,19 @@
     align-items: center;
 }
 
+.create_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;  
+  margin:10px
+}
 .create_form input{
-    width:300px;
-    padding: 10px;
-    border-bottom: 2px solid;
-    outline: none;
+  border-radius: 5px;
+  flex: 1;         
+  max-width: 500px; 
+  padding:8px;
+  font-size: 16px;
 }
 
 .create_form button{
@@ -16,12 +24,12 @@
     background-color: black;
     color: white;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .task{
     display: flex;
     align-items: center;
-    
     justify-content: space-between;
     background: black;
     color: white;
@@ -57,10 +65,10 @@
   size: 30px;
 }
 
-/* Standardize button size */
+
 .checkBtn,
 .delBtn {
-  flex-shrink: 0;             /* don't let them shrink */
+  flex-shrink: 0;             
   width: 40px;
   height: 40px;
   border-radius: 6px;
@@ -85,7 +93,7 @@
   margin-left: 105px;
 }
 
-/*glowing buttons ...*/
+
 .checkBtn:hover {
   color:#ffffff;
   background: #008cff;
@@ -136,4 +144,37 @@
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+.sort-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.sort-controls label {
+  font-weight: bold;
+  color: #333;
+}
+
+.sort-controls select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 10px;
+  cursor: pointer;
+  background-color: white;
+  transition: all 0.2s ease-in-out;
+}
+
+.sort-controls select:hover {
+  border-color: #4CAF50;       
+}
+
+.sort-controls select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.6);
 }
