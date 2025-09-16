@@ -1,6 +1,5 @@
 import { useState } from "react"
 import axios from "axios"
-import useFetchTodos from "./useFetchTodos"
 
 export default function useUpdateTodo(fetchTodos) {
   const [isLoading, setIsLoading] = useState(false)
@@ -8,18 +7,24 @@ export default function useUpdateTodo(fetchTodos) {
   const [isSuccess, setIsSuccess] = useState(false)
   const [error, setError] = useState(null)
 
-  
-
-  const updateTodo = async (id, done) => {
+  const updateTodo = async (id, done, page = 1, sort = "desc") => {
     setIsLoading(true)
     setIsErrored(false)
     setIsSuccess(false)
     setError(null)
 
     try {
-      await axios.put(`http://localhost:3001/update/${id}`, { done: !done })
+      await axios.put(
+        `/api/todos/${id}`,
+        { done: !done },
+        { withCredentials: true }
+      )
       setIsSuccess(true)
-      if (fetchTodos) fetchTodos()
+
+      if (fetchTodos) {
+        const res = await fetchTodos(page, sort)
+        return res
+      }
     } catch (err) {
       setIsErrored(true)
       setError(err)

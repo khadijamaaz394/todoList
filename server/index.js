@@ -1,85 +1,81 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
-const TodoModel = require("./Models/Todo")
+require("dotenv").config()
 
-const app= express()
+const Todo = require("./Models/Todo")
+const authRoutes = require("./routes/auth")
+const { verifyToken } = require("./middleware/auth")
 
-// log all incoming requests
-// app.use((req, res, next) => {
-//   console.log(`${req.method} ${req.url}`);
-//   next();
-// });
-
-app.use(cors());
+const app = express()
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true
+}))
 app.use(express.json())
 
-mongoose.connect('mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/test")
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err))
 
-// display todos
-app.get("/get", async (req, res) => {
+app.use("/api", authRoutes)
+
+app.get("/api/todos", verifyToken, async (req, res) => {
   try {
+    const userId = req.user.id
     const page = parseInt(req.query.page) || 1
     const limit = parseInt(req.query.limit) || 5
+    const sortOrder = req.query.sort === "asc" ? 1 : -1
     const skip = (page - 1) * limit
 
-    // default = newest first
-    const sortOrder = req.query.sort === "asc" ? 1 : -1  
-
-    const todos = await TodoModel.find()
-      .sort({ createdAt: sortOrder })   // 👈 sort based on query
+    const todos = await Todo.find({ userId })
+      .sort({ createdAt: sortOrder })
       .skip(skip)
       .limit(limit)
 
-    const total = await TodoModel.countDocuments()
+    const total = await Todo.countDocuments({ userId })
+    res.json({ todos, total, page, totalPages: Math.ceil(total / limit) })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
 
-    res.json({
-      todos,
-      total,
-      page,
-      totalPages: Math.ceil(total / limit),
-    })
+app.post("/api/todos", verifyToken, async (req, res) => {
+  try {
+    const { task } = req.body
+    if (!task) return res.status(400).json({ error: "Task required" })
+    const todo = await Todo.create({ task, userId: req.user.id })
+    res.json(todo)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+app.put("/api/todos/:id", verifyToken, async (req, res) => {
+  try {
+    const todo = await Todo.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user.id },
+      req.body,
+      { new: true }
+    )
+    if (!todo) return res.status(404).json({ error: "Not found or not yours" })
+    res.json(todo)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+app.delete("/api/todos/:id", verifyToken, async (req, res) => {
+  try {
+    const deleted = await Todo.findOneAndDelete({ _id: req.params.id, userId: req.user.id })
+    if (!deleted) return res.status(404).json({ error: "Not found or not yours" })
+    res.json({ message: "Todo deleted" })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
 
 
-app.put('/update/:id',(req,res)=>{
-    const {id}=req.params;
-    const update = req.body; 
-    TodoModel.findByIdAndUpdate({_id:id},update,{new:true})
-    .then(result=> res.json(result))
-    .catch(err=> res.json(err))
-})
+app.get("/", (req, res) => res.send("API running"))
 
-app.delete('/delete/:id',(req,res)=>{
-    const {id}=req.params;
-    TodoModel.findByIdAndDelete({_id:id})
-    .then(result=> res.json(result))
-    .catch(err=> res.json(err))
-})
-
-//cause i was getting a warning ( gpt )
-app.get('/', (req, res) => {
-  res.send('API is running');
-});
-
-// add task in the mongodb compass
-app.post('/add',(req,res)=>{
-    const task= req.body.task;
-    TodoModel.create({
-        task:task
-    }).then(result=>res.json(result))
-    .catch(err=>res.json(err))
-})
-
-// chat gpt for the console favicon error
-app.use((req, res) => {
-  res.status(404).json({ message: "Not Found" });
-});
-
-app.listen(3001,()=>{
-    console.log("server is set on port")
-}
-)
+app.listen(3001, () => console.log("Server running on port 3001"))

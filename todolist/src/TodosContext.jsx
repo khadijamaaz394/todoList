@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState } from "react"
 
 const TodosContext = createContext()
 
-// custom hook like useAuths()
 export function useTodos() {
   const context = useContext(TodosContext)
   if (context === undefined) {
@@ -11,7 +10,7 @@ export function useTodos() {
   return context
 }
 
-// Provider component
+//provider comp
 export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([])
 

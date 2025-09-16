@@ -133,12 +133,12 @@
 }
 
 .pagination button {
-  background-color: #DC2F02;
+  background-color: #0b1984;
   color: rgb(255, 255, 255);
 }
 
 .pagination button:hover:not(:disabled) {
-  background-color: #E85D04;
+  background-color: #152aca;
 }
 
 .pagination button:disabled {
@@ -177,4 +177,45 @@
   outline: none;
   border-color: #4CAF50;
   box-shadow: 0 0 4px rgba(76, 175, 80, 0.6);
+}
+.logout-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-left: 10px; 
+}
+
+.logout-btn:hover {
+  background: #d32f2f;
+}
+
+.signup{
+  margin:10px;
+  padding: 10px;
+  background-color: rgb(239, 244, 248);
+  color: #333;
+  text-align: center;
+}
+.signup input{
+  margin: 10px;
+  border-color: #333;
+  border-radius: 8px;
+  padding: 6px;
+}
+.signup button{
+  background-color: #152aca;
+  border-radius: 8px;
+  padding: 7px;
+  color: #ffffff;
+}
+.signup button:hover{
+  background-color:#0b1984;
+}
+.signMsg{
+  color: #152aca;
+  text-align: center;
 }
