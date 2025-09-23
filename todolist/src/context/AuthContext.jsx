@@ -1,56 +1,58 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import axios from "axios"
+import { createContext, useContext, useState, useEffect } from "react";
+import axiosInstance from "../utils/axiosInstance";
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-export function useAuth() {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider")
-  return ctx
-}
+function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
-    const raw = localStorage.getItem("auth")
-    return raw ? JSON.parse(raw).user : null
-  })
-  const [token, setToken] = useState(() => {
-    const raw = localStorage.getItem("auth")
-    return raw ? JSON.parse(raw).token : null
-  })
-
+  // Auto sign-in on page load
   useEffect(() => {
-    if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
-    else delete axios.defaults.headers.common["Authorization"]
-  }, [token])
+    const checkAuth = async () => {
+      try {
+        const res = await axiosInstance.get("/auth/me"); // backend route
+        setUser(res.data);
+      } catch (err) {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
-  useEffect(() => {
-    if (user && token) localStorage.setItem("auth", JSON.stringify({ user, token }))
-    else localStorage.removeItem("auth")
-  }, [user, token])
+  const login = async (email, password) => {
+    const res = await axiosInstance.post("/auth/login", { email, password });
+    setUser(res.data.user);
+    localStorage.setItem("token", res.data.token);
+  };
 
-  const signup = async (data) => {
-    const res = await axios.post("http://localhost:3001/api/auth/signup", data)
-    setToken(res.data.token)
-    setUser(res.data.user)
-  }
-
-  const login = async (data) => {
-    const res = await axios.post("http://localhost:3001/api/auth/login", data)
-    setToken(res.data.token)
-    setUser(res.data.user)
-  }
+  const signup = async (email, password) => {
+    const res = await axiosInstance.post("/auth/signup", { email, password });
+    setUser(res.data.user);
+    localStorage.setItem("token", res.data.token);
+  };
 
   const logout = () => {
-    setUser(null)
-    setToken(null)
-    localStorage.removeItem("auth")
-    delete axios.defaults.headers.common["Authorization"]
-  }
+    setUser(null);
+    localStorage.removeItem("token");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, token, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
+
+// ✅ Wrapped hook
+function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}
+
+export { AuthProvider, useAuth };

@@ -1,37 +1,29 @@
-import { useState } from "react"
-import axios from "axios"
+import { useState } from "react";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function useUpdateTodo(fetchTodos) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isErrored, setIsErrored] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(false)
-  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isErrored, setIsErrored] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
-  const updateTodo = async (id, done, page = 1, sort = "desc") => {
-    setIsLoading(true)
-    setIsErrored(false)
-    setIsSuccess(false)
-    setError(null)
+  const updateTodo = async (id, done) => {
+    setIsLoading(true);
+    setIsErrored(false);
+    setIsSuccess(false);
+    setError(null);
 
     try {
-      await axios.put(
-        `/api/todos/${id}`,
-        { done: !done },
-        { withCredentials: true }
-      )
-      setIsSuccess(true)
-
-      if (fetchTodos) {
-        const res = await fetchTodos(page, sort)
-        return res
-      }
+      await axiosInstance.put(`/todos/${id}`, { done: !done });
+      setIsSuccess(true);
+      if (fetchTodos) fetchTodos();
     } catch (err) {
-      setIsErrored(true)
-      setError(err)
+      setIsErrored(true);
+      setError(err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  return { updateTodo, isLoading, isErrored, isSuccess, error }
+  return { updateTodo, isLoading, isErrored, isSuccess, error };
 }
