@@ -17,7 +17,7 @@ export default function Home() {
   const user = auth.user;
 
   const displayName = user?.username || user?.name || user?.email || "User";
-  const heading = `${toPossessive(displayName)} Todos`; // Capital T as requested
+  const heading = `${toPossessive(displayName)} Todos`; 
 
   return (
     <div className="home">
