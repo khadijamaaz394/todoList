@@ -5,7 +5,6 @@ const User = require("../Models/User");
 
 const router = express.Router();
 
-// 🔑 helper function to generate JWT
 function generateToken(user) {
   return jwt.sign(
     { id: user._id, email: user.email },
@@ -14,12 +13,13 @@ function generateToken(user) {
   );
 }
 
-// 📝 SIGNUP
+//signup part
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password } = req.body || {};
 
     if (!username || !email || !password) {
+      console.log("sign up body",req.body)
       return res.status(400).json({ error: "All fields required" });
     }
 
@@ -38,15 +38,25 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// 🔐 LOGIN
+// login prt
 router.post("/login", async (req, res) => {
+   console.log("LOGIN req.body:", req.body); // check while testing
   try {
-    const { email, password } = req.body;
+    const { email, username, emailOrUsername, password  } = req.body || {};
 
-    const user = await User.findOne({ email });
+    const id = (emailOrUsername || email || username || "").trim();
+    const pass = (password || "").trim();
+
+    if (!id || !pass) {
+      return res.status(400).json({ error: "All fields required" });
+    }
+
+     const user = await User.findOne({
+      $or: [{ email: id.toLowerCase() }, { username: id }],
+    });
     if (!user) return res.status(400).json({ error: "Invalid email or password" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(pass, user.password);
     if (!isMatch) return res.status(400).json({ error: "Invalid email or password" });
 
     const token = generateToken(user);
@@ -56,7 +66,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// 👤 GET CURRENT USER
+// curr user
 router.get("/me", async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];

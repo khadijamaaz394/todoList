@@ -8,17 +8,25 @@ const authRoutes = require("./routes/auth")
 const { verifyToken } = require("./middleware/auth")
 
 const app = express()
-app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true
-}))
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+    allowedHeaders: ["Content-Type","Authorization"],
+  })
+);
 app.use(express.json())
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/todos", require("./routes/todos"));   
+app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
 mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/test")
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error(err))
 
-app.use("/auth", authRoutes)
+
 
 app.get("/api/todos", verifyToken, async (req, res) => {
   try {

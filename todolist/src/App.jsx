@@ -2,45 +2,55 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Home from "./Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import { useAuth } from "./context/AuthContext";
+import useAuth from "./hooks/useAuth.js";
+import "./App.css";
 
-// ✅ Wrapper for protected routes
-function PrivateRoute({ children }) {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <p>Loading...</p>; // optional spinner
-  }
-
-  // if no user, redirect to login
+function RequireAuth({ children }) {
+  const { user, isAuthLoading } = useAuth() || {};
+  if (isAuthLoading) return <div>Checking session…</div>;
   return user ? children : <Navigate to="/login" replace />;
 }
 
-export default function App() {
-  const { user } = useAuth();
+function PublicOnly({ children }) {
+  const { user, isAuthLoading } = useAuth() || {};
+  if (isAuthLoading) return <div />; 
+  return user ? <Navigate to="/" replace /> : children;
+}
 
+export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Default route redirects */}
+        {/* Protected */}
         <Route
           path="/"
-          element={user ? <Navigate to="/home" /> : <Navigate to="/login" />}
-        />
-
-        {/* Protected Home */}
-        <Route
-          path="/home"
           element={
-            <PrivateRoute>
+            <RequireAuth>
               <Home />
-            </PrivateRoute>
+            </RequireAuth>
           }
         />
 
-        {/* Auth pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* Public only */}
+        <Route
+          path="/login"
+          element={
+            <PublicOnly>
+              <Login />
+            </PublicOnly>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PublicOnly>
+              <Signup />
+            </PublicOnly>
+          }
+        />
+
+        {/* london bridge is falling back */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

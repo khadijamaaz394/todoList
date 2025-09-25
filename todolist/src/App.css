@@ -1,74 +1,59 @@
 .home{
-    display:flex;
-    flex-direction: column;
-    align-items: center;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 
 .create_form {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;  
-  margin:10px
+  gap: 10px;
+  margin:10px;
 }
 .create_form input{
   border-radius: 5px;
-  flex: 1;         
-  max-width: 500px; 
+  flex: 1;
+  max-width: 500px;
   padding:8px;
   font-size: 16px;
 }
-
 .create_form button{
-    padding: 10px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
 }
+
 
 .task{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: black;
-    color: white;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px 0;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  gap: 10px;
 }
-
 .task p {
-  flex: 1;                   
+  flex: 1;
   margin: 0;
-  text-align: center;         
-  word-wrap: break-word;      
+  text-align: center;
+  word-wrap: break-word;
   overflow-wrap: anywhere;
 }
-
 .taskDone{
-    text-decoration: line-through;
-    color: #aaa;
+  text-decoration: line-through;
+  color: #aaa;
 }
-
-.checkBtn{
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #00000080;
-  text-shadow: none;
-  border:1px solid #00000080;
-  transition: 0.1s ease;
-  user-select: none;
-  margin-right: 100px;
-  size: 30px;
-}
-
 
 .checkBtn,
 .delBtn {
-  flex-shrink: 0;             
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   border-radius: 6px;
@@ -76,53 +61,41 @@
   justify-content: center;
   align-items: center;
   font-size: 18px;
-}
 
-.checkBtn,
-.delBtn{
-  padding: 10px 20px;
-  text-transform: uppercase;
-  font-weight: 500;
+  background: #ffffff;
   color: #00000080;
-  text-shadow: none;
   border:1px solid #00000080;
-  transition: 0.1s ease;
+  transition: all 0.15s ease-in-out;
   user-select: none;
+  margin: 0; 
 }
-.delBtn{
-  margin-left: 105px;
-}
-
-
 .checkBtn:hover {
   color:#ffffff;
   background: #008cff;
   border:1px solid #008cff;
-  text-shadow:
-  0 0 5px #ffffff,
-    0 0 10px #ffffff,
-      0 0 20px #ffffff;
   box-shadow:
-  0 0 5px #008cff,
-  0 0 20px #008cff,
-  0 0 50px #008cff,
-  0 0 100px #008cff, ;
+    0 0 5px #008cff,
+    0 0 20px #008cff,
+    0 0 50px #008cff,
+    0 0 100px #008cff;
 }
 .delBtn:hover {
   color:#ffffff;
   background: #ff0000;
   border:1px solid #ff0000;
-  text-shadow:
-  0 0 5px #ffffff,
-    0 0 10px #ffffff,
-      0 0 20px #ffffff;
   box-shadow:
-  0 0 5px #ff0000,
-  0 0 20px #ff0000,
-  0 0 50px #ff0000,
-  0 0 100px #ff0000, ;
+    0 0 5px #ff0000,
+    0 0 20px #ff0000,
+    0 0 50px #ff0000,
+    0 0 100px #ff0000;
+}
+.checkBtn:focus-visible,
+.delBtn:focus-visible {
+  outline: 2px solid #4CAF50;
+  outline-offset: 2px;
 }
 
+/* Pagination */
 .pagination {
   display: flex;
   justify-content: center;
@@ -131,20 +104,23 @@
   gap: 10px;
   font-size: 16px;
 }
-
 .pagination button {
   background-color: #0b1984;
-  color: rgb(255, 255, 255);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
 }
-
 .pagination button:hover:not(:disabled) {
   background-color: #152aca;
 }
-
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+/* Sort controls */
 .sort-controls {
   display: flex;
   align-items: center;
@@ -153,64 +129,65 @@
   gap: 8px;
   font-size: 12px;
 }
-
 .sort-controls label {
   font-weight: bold;
   color: #333;
 }
-
 .sort-controls select {
   padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 10px;
+  font-size: 12px;
   cursor: pointer;
   background-color: white;
   transition: all 0.2s ease-in-out;
 }
-
 .sort-controls select:hover {
-  border-color: #4CAF50;       
+  border-color: #4CAF50;
 }
-
 .sort-controls select:focus {
   outline: none;
   border-color: #4CAF50;
   box-shadow: 0 0 4px rgba(76, 175, 80, 0.6);
 }
+
+/* Logout */
 .logout-btn {
   background: #f44336;
-  color: white;
+  color: rgb(0, 0, 0);
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.2s ease;
-  margin-left: 10px; 
+  margin-left: 10px;
 }
-
 .logout-btn:hover {
   background: #d32f2f;
 }
 
+/* Signup form */
 .signup{
   margin:10px;
   padding: 10px;
   background-color: rgb(239, 244, 248);
   color: #333;
   text-align: center;
+  border-radius: 8px;
 }
 .signup input{
   margin: 10px;
-  border-color: #333;
+  border: 1px solid #333;
   border-radius: 8px;
   padding: 6px;
 }
 .signup button{
   background-color: #152aca;
   border-radius: 8px;
-  padding: 7px;
+  padding: 7px 12px;
   color: #ffffff;
+  border: none;
+  cursor: pointer;
 }
 .signup button:hover{
   background-color:#0b1984;
@@ -219,3 +196,51 @@
   color: #152aca;
   text-align: center;
 }
+
+.home-header {
+  display: flex;
+  align-items: center;    
+  gap: 12px;              
+  flex-wrap: wrap;        
+}
+
+.home-header h1 {
+  margin: 0;
+}
+
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  gap: 12px;
+}
+
+
+.login-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;       
+  justify-content: center;
+}
+
+
+.auth-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;  
+  width: 100%;
+  margin-top: 4px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+.link-btn:hover { opacity: 0.85; }
